@@ -6,12 +6,23 @@
     </head>
 <h1>Hello!</h1>
 
+<div class="slidecontainer">
+    <input type="range" min="10" max="100" value="50" class="slider" id="slider">
+    <p>Current Size: <span id="demo"></span></p>
+  </div>
+
+<div class="speedcontainer">
+    <input type="range" min="1" max="20" value="5" class="slider" id="speedSlider">
+    <p>Current Speed: <span id="speedValue"></span> ms</p>
+</div>
+
 <button type="button" onclick="resetArray()">Generate new array</button>
 
 <div id="arrays">
     
 </div>
-<canvas id="myCanvas" width="200" height="100" style="border:1px solid #c3c3c3;">
+
+<canvas id="myCanvas" width="800" height="400" style="border:1px solid #c3c3c3;">
         Your browser does not support the canvas element :,(
 </canvas>
 
