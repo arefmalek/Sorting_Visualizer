@@ -5,9 +5,13 @@ myHeading.textContent = "hello yes!";
 // initializing stuff I use everywhere
 let randomArray = [];
 let colors = [];
-let arr_space = document.getElementById("arrays");
 var canvas = document.getElementById("myCanvas");
 const MAX_ARR_VAL = 1000;
+
+// COLORS
+const DEFAULT_COLOR = "black"
+const COMPARE_COLOR = "red";
+const SWAP_COLOR = "green"
 
 // stuff we get from html side
 var sizeSlider= document.getElementById("slider");
@@ -41,7 +45,7 @@ function resetArray() {
     randomArray = []
     for (let i = 0; i < ARR_SIZE; i++) {
         randomArray.push(Math.floor(Math.random() * MAX_ARR_VAL));
-        colors.push("black");
+        colors.push(DEFAULT_COLOR);
     }
     draw_array(canvas, randomArray, colors);
 }
@@ -112,33 +116,78 @@ function draw_array(canvas, ary, colors) {
 function compare_indexes(first, second) {
     /**
      * Compares two values 
-     * returns -1 if array value at first greater than array value at second
+     * returns 1 if array value at first greater than array value at second
      * returns -1 if array value at first less than array value at second
      * 
      * first - int index of the first element to compare
      * second - int index of the second element to compare
      */
+    colors[first] = COMPARE_COLOR;
+    colors[second] = COMPARE_COLOR;
+    draw_array(canvas, randomArray, colors);
+    sleep(SPEED);
 
-    if (randomArray[first] > randomArray[second]) {
-        // first greater than second
-    }
-    if (randomArray[first] < randomArray[second]) {
-        // first less than second
+    var returnVal = 0
+    if (randomArray[first] >= randomArray[second]) {returnVal = 1;}
+    else {returnVal -1;}
+
+    colors[first] = DEFAULT_COLOR;
+    colors[second] = DEFAULT_COLOR;
+ 
+}
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+ 
+function swap(index1, index2) {
+    /**
+     * Swaps the values between two arrays and updates the array
+     */
+    // update colors
+    colors[index1] = SWAP_COLOR;
+    colors[index2] = SWAP_COLOR;
+    // update values
+    temp = randomArray[index1];
+    randomArray[index1] = randomArray[index2];
+    randomArray[index2] = temp;
+    // show new array
+    draw_array(canvas, randomArray, colors);
+    sleep(SPEED);
+
+    colors[index1] = DEFAULT_COLOR;
+    colors[index2] = DEFAULT_COLOR;
+
+    return returnVal;
+}
+
+
+function insertion_sort() {
+    for (let i = 0; i < randomArray.length; i++) {
+        var minVal = i;
+        colors[i] = SWAP_COLOR;
+        for (let j = i; j < randomArray.length; j++) {
+            draw_array(canvas, randomArray, colors);
+            if (compare_indexes(j, i) === -1) {
+                colors[minVal] = DEFAULT_COLOR;
+                minVal = j;
+                colors[minVal] = SWAP_COLOR;
+            }
+        }
+        if (minVal != i) {swap(minVal, i);}
     }
 }
 
-function bubble_sort(arr) {
+function bubble_sort() {
     var compare = true;
     while (compare === true) {
         compare = false;
-        for (let i = 1; i < arr.length; i++) {
+        for (let i = 1; i < randomArray.length; i++) {
+            console.log(compare_indexes(i-1, i));
             draw_array(canvas, randomArray, colors)
-            if (arr[i] < arr[i-1]) {
+            if (compare_indexes(i-1, i) === 1) {
                 compare = true;
-                let temp = arr[i];
-                arr[i] = arr[i-1];
-                arr[i-1] = temp;
-            }
+                swap(i, i-1);
+           }
         }
     }
 
