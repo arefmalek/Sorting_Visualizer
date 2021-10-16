@@ -144,37 +144,30 @@ function swap(index1, index2) {
      * Swaps the values between two arrays and updates the array
      */
     // update colors
-    colors[index1] = SWAP_COLOR;
-    colors[index2] = SWAP_COLOR;
+
     // update values
     temp = randomArray[index1];
     randomArray[index1] = randomArray[index2];
     randomArray[index2] = temp;
+
     // show new array
     draw_array(canvas, randomArray, colors);
     sleep(SPEED);
-
-    colors[index1] = DEFAULT_COLOR;
-    colors[index2] = DEFAULT_COLOR;
-
     return returnVal;
 }
 
-
 function insertion_sort() {
-    for (let i = 0; i < randomArray.length; i++) {
+    arr = randomArray
+    for (let i = 0; i < arr.length; i++) {
         var minVal = i;
-        colors[i] = SWAP_COLOR;
-        for (let j = i; j < randomArray.length; j++) {
-            draw_array(canvas, randomArray, colors);
-            if (compare_indexes(j, i) === -1) {
-                colors[minVal] = DEFAULT_COLOR;
-                minVal = j;
-                colors[minVal] = SWAP_COLOR;
-            }
+        for (let j = i; j < arr.length; j++) {
+            if (arr[j] < arr[minVal]) { minval = j; }
         }
-        if (minVal != i) {swap(minVal, i);}
+        if (minVal != i) {swap(i, minVal);}
+        draw_array(canvas, arr, colors);
     }
+    console.log(arr === randomArray.sort())
+    return arr;
 }
 
 function bubble_sort() {
