@@ -35,6 +35,7 @@ var SPEED = speedSlider.value;
 
 // sorting
 var bubbleSort = document.getElementById("bubbleSort");
+var selectionSort = document.getElementById("selectionSort");
 var insertionSort = document.getElementById("insertionSort");
 
 speedSlider.oninput = function() {
@@ -52,7 +53,6 @@ async function resetArray() {
         randomArray.push(Math.floor(Math.random() * MAX_ARR_VAL));
         colors.push(DEFAULT_COLOR);
     }
-    console.log(randomArray);
     draw_array(canvas, randomArray, colors);
 }
 
@@ -88,11 +88,15 @@ async function draw_array(canvas, arr, colors) {
     }
 }
 
+// helper function for timing
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 async function swap(index1, index2) {
+    /**
+     * The helper function for swapping
+     */
     const temp = randomArray[index1];
     randomArray[index1] = randomArray[index2];
     randomArray[index2] = temp;
@@ -139,7 +143,7 @@ async function bubble_sort() {
     draw_array(canvas, randomArray, colors);
 }
 
-async function insertion_sort() {
+async function selection_sort() {
     for (let i = 0; i < randomArray.length; i++) {
         let minDex = i;
         for (let j = i + 1; j < randomArray.length; j++) {
@@ -148,6 +152,18 @@ async function insertion_sort() {
         if (minDex != i) { await swap(i, minDex);}
     }
     draw_array(canvas, randomArray, colors);
+}
+
+async function insertion_sort() {
+    for (let i = 0; i < randomArray.length; i++) {
+        // start at first index
+        val = randomArray[i];
+        let j = i;
+        while (j > 0 && await compare_to(j, j-1) === 1) { 
+            await swap(j, j-1); 
+            j -= 1;
+        }
+    }
 }
 
 async function heap_sort() {
@@ -162,13 +178,15 @@ async function heap_sort() {
     }
 }
 
-async function selection_sort() {
+
+
+async function merge_sort(leftIndex, rightIndex) {
 
 }
 
-async function merge_sort() {
+bubbleSort.addEventListener("click", ()=>{bubble_sort();} );
+selectionSort.addEventListener("click", ()=>{selection_sort();} );
+insertionSort.addEventListener("click", ()=>{insertion_sort();});
 
-}
-
-bubbleSort.addEventListener("click", bubble_sort);
-insertionSort.addEventListener("click", insertion_sort);
+// how I'm gonna call the heap sort function
+//()=>{heap_sort(0,randomArray.length - 1)}
