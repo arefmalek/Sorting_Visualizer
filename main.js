@@ -1,5 +1,5 @@
 const myHeading = document.querySelector("h1");
-myHeading.textContent = "hello yes!";
+myHeading.textContent = "Sorting Visualizer";
 
 
 // initializing stuff I use everywhere
