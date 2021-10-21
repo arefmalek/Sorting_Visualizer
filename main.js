@@ -45,7 +45,7 @@ speedSlider.oninput = function() {
 
 // drawing the array on a canvas
 
-function resetArray() {
+async function resetArray() {
     randomArray = [];
     colors = [];
     for (let i = 0; i < ARR_SIZE; i++) {
@@ -56,7 +56,7 @@ function resetArray() {
     draw_array(canvas, randomArray, colors);
 }
 
-function draw_array(canvas, arr, colors) {
+async function draw_array(canvas, arr, colors) {
     /**
      * Draws the array sent on a canvas
      * 
@@ -88,44 +88,86 @@ function draw_array(canvas, arr, colors) {
     }
 }
 
-function swap(index1, index2) {
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+async function swap(index1, index2) {
     const temp = randomArray[index1];
     randomArray[index1] = randomArray[index2];
     randomArray[index2] = temp;
 
     colors[index1] = SWAP_COLOR;
     colors[index2] = SWAP_COLOR;
+
     draw_array(canvas, randomArray, colors);
-    setTimeout(SPEED);
+
+    await sleep(SPEED);
+    colors[index1] = DEFAULT_COLOR;
+    colors[index2] = DEFAULT_COLOR;
+
+}
+
+async function compare_to(index1, index2) {
+    colors[index1] = COMPARE_COLOR;
+    colors[index2] = COMPARE_COLOR;
+
+    draw_array(canvas, randomArray, colors);
+    await sleep(SPEED);
 
     colors[index1] = DEFAULT_COLOR;
     colors[index2] = DEFAULT_COLOR;
+
+    draw_array(canvas, randomArray, colors);
+    await sleep(SPEED);
+
+    if (randomArray[index1] > randomArray[index2]) return -1;
+    else if (randomArray[index1] <= randomArray[index2]) return 1;
 }
 
-function bubble_sort() {
+async function bubble_sort() {
     let compare = true;
-    console.log(randomArray);
     while (compare === true) {
         compare = false;
         for (let i = 0; i < randomArray.length - 1; i++) {
-            if (randomArray[i] > randomArray[i+1]) {
+            if (await compare_to(i, i + 1) === -1) {
                 compare = true;
-                swap(i, i+1);
+                await swap(i, i+1);
             }
         }
     }
     draw_array(canvas, randomArray, colors);
 }
 
-function insertion_sort() {
+async function insertion_sort() {
     for (let i = 0; i < randomArray.length; i++) {
         let minDex = i;
         for (let j = i + 1; j < randomArray.length; j++) {
-            if (randomArray[minDex] > randomArray[j]) {minDex = j;}
+            if (await compare_to(minDex, j) === -1) {minDex = j;}
         }
-        if (minDex != i) { swap(i, minDex);}
+        if (minDex != i) { await swap(i, minDex);}
     }
     draw_array(canvas, randomArray, colors);
+}
+
+async function heap_sort() {
+    async function getLeftChild(index) {
+        return ((index * 2 + 1 < randomArray.length) ? index * 2 + 1: -1);
+    }
+    async function getRightChild(index) {
+        return ((index * 2 + 2 < randomArray.length) ? index * 2 + 2: -1);
+    }
+    async function getParent(index) {
+        return ((index != 0) ? index / 2 - 1: -1);
+    }
+}
+
+async function selection_sort() {
+
+}
+
+async function merge_sort() {
+
 }
 
 bubbleSort.addEventListener("click", bubble_sort);
