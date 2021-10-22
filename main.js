@@ -93,7 +93,7 @@ function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-async function swap(index1, index2) {
+async function swap(arr, index1, index2) {
     /**
      * The helper function for swapping
      */
@@ -104,7 +104,7 @@ async function swap(index1, index2) {
     colors[index1] = SWAP_COLOR;
     colors[index2] = SWAP_COLOR;
 
-    draw_array(canvas, randomArray, colors);
+    draw_array(canvas, arr, colors);
 
     await sleep(SPEED);
     colors[index1] = DEFAULT_COLOR;
@@ -112,61 +112,61 @@ async function swap(index1, index2) {
 
 }
 
-async function compare_to(index1, index2) {
+async function compare_to(arr, index1, index2) {
     colors[index1] = COMPARE_COLOR;
     colors[index2] = COMPARE_COLOR;
 
-    draw_array(canvas, randomArray, colors);
+    draw_array(canvas, arr, colors);
     await sleep(SPEED);
 
     colors[index1] = DEFAULT_COLOR;
     colors[index2] = DEFAULT_COLOR;
 
-    draw_array(canvas, randomArray, colors);
+    draw_array(canvas, arr, colors);
     await sleep(SPEED);
 
-    if (randomArray[index1] > randomArray[index2]) return -1;
-    else if (randomArray[index1] <= randomArray[index2]) return 1;
+    if (arr[index1] > arr[index2]) return -1;
+    else if (arr[index1] <= arr[index2]) return 1;
 }
 
-async function bubble_sort() {
+async function bubble_sort(arr) {
     let compare = true;
     while (compare === true) {
         compare = false;
-        for (let i = 0; i < randomArray.length - 1; i++) {
-            if (await compare_to(i, i + 1) === -1) {
+        for (let i = 0; i < arr.length - 1; i++) {
+            if (await compare_to(arr, i, i + 1) === -1) {
                 compare = true;
-                await swap(i, i+1);
+                await swap(arr, i, i+1);
             }
         }
     }
-    draw_array(canvas, randomArray, colors);
+    draw_array(canvas, arr, colors);
 }
 
-async function selection_sort() {
-    for (let i = 0; i < randomArray.length; i++) {
+async function selection_sort(arr) {
+    for (let i = 0; i < arr.length; i++) {
         let minDex = i;
-        for (let j = i + 1; j < randomArray.length; j++) {
-            if (await compare_to(minDex, j) === -1) {minDex = j;}
+        for (let j = i + 1; j < arr.length; j++) {
+            if (await compare_to(arr, minDex, j) === -1) {minDex = j;}
         }
-        if (minDex != i) { await swap(i, minDex);}
+        if (minDex != i) { await swap(arr, i, minDex);}
     }
-    draw_array(canvas, randomArray, colors);
+    draw_array(canvas, arr, colors);
 }
 
-async function insertion_sort() {
-    for (let i = 0; i < randomArray.length; i++) {
+async function insertion_sort(arr) {
+    for (let i = 0; i < arr.length; i++) {
         // start at first index
-        val = randomArray[i];
+        val = arr[i];
         let j = i;
-        while (j > 0 && await compare_to(j, j-1) === 1) { 
-            await swap(j, j-1); 
+        while (j > 0 && await compare_to(arr, j, j-1) === 1) { 
+            await swap(arr,j, j-1); 
             j -= 1;
         }
     }
 }
 
-async function heap_sort() {
+async function heap_sort(arr) {
     async function getLeftChild(index) {
         return ((index * 2 + 1 < randomArray.length) ? index * 2 + 1: -1);
     }
@@ -184,9 +184,9 @@ async function merge_sort(leftIndex, rightIndex) {
 
 }
 
-bubbleSort.addEventListener("click", ()=>{bubble_sort();} );
-selectionSort.addEventListener("click", ()=>{selection_sort();} );
-insertionSort.addEventListener("click", ()=>{insertion_sort();});
+bubbleSort.addEventListener("click", ()=>{bubble_sort(randomArray);} );
+selectionSort.addEventListener("click", ()=>{selection_sort(randomArray);} );
+insertionSort.addEventListener("click", ()=>{insertion_sort(randomArray);});
 
 // how I'm gonna call the heap sort function
 //()=>{heap_sort(0,randomArray.length - 1)}
