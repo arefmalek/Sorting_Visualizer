@@ -176,12 +176,16 @@ async function heap_sort(arr) {
     async function getParent(index) {
         return ((index != 0) ? index / 2 - 1: -1);
     }
+    // build heap from bottom-up
+    let lastParent = Math.floor(arr.length / 2) - 1;
+
+
+    // sort down
 }
 
 
 
 async function merge_sort(leftIndex, rightIndex) {
-
 }
 
 bubbleSort.addEventListener("click", ()=>{bubble_sort(randomArray);} );
