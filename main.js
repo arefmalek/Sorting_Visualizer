@@ -176,8 +176,38 @@ async function heap_sort(arr) {
     async function getParent(index) {
         return ((index != 0) ? index / 2 - 1: -1);
     }
+
+    async function compareLeft(index) {
+        left = getLeftChild(index);
+        if (left < index) {return false;}
+        return (arr[index] < arr[left]);
+    }
+    async function compareRight(index) {
+        right = getLeftChild(index);
+        if (right < index) {return false;}
+        return (arr[index] < arr[right]);
+    }
     // build heap from bottom-up
-    let lastParent = Math.floor(arr.length / 2) - 1;
+    let idx = Math.floor(arr.length / 2) - 1;
+    while (idx > 0) {
+        let tempNode = idx;
+        // basically form heap
+        while (compareLeft(tempNode) || compareRight(tempNode)) {
+            let leftVal = MAX_ARR_VAL + 1;
+            let rightVal = MAX_ARR_VAL + 1;
+            if (compareLeft(tempNode)) {leftVal = arr[getLeftChild(tempNode)];}
+            if (compareRight(tempNode)) {rightVal = arr[getRightChild(tempNode)];}
+
+            let minDex = -1;
+            if (leftVal < rightVal) {minDex = left;}
+            else {minDex = right}
+
+            // swap (we're guaranteed to enter this)
+            swap(arr, tempNode, minDex);
+            tempNode = minDex;
+        }
+        idx -= 1;
+    }
 
 
     // sort down
