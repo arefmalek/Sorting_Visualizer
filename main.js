@@ -37,6 +37,7 @@ var SPEED = speedSlider.value;
 var bubbleSort = document.getElementById("bubbleSort");
 var selectionSort = document.getElementById("selectionSort");
 var insertionSort = document.getElementById("insertionSort");
+var heapSort = document.getElementById("heapSort");
 
 speedSlider.oninput = function() {
     speedOutput.innerHTML = this.value;
@@ -193,6 +194,7 @@ async function heap_sort(arr) {
         let tempNode = idx;
         // basically form heap
         while (compareLeft(tempNode) || compareRight(tempNode)) {
+            console.log("passed");
             let leftVal = MAX_ARR_VAL + 1;
             let rightVal = MAX_ARR_VAL + 1;
             if (compareLeft(tempNode)) {leftVal = arr[getLeftChild(tempNode)];}
@@ -209,7 +211,6 @@ async function heap_sort(arr) {
         idx -= 1;
     }
 
-
     // sort down
 }
 
@@ -221,6 +222,8 @@ async function merge_sort(leftIndex, rightIndex) {
 bubbleSort.addEventListener("click", ()=>{bubble_sort(randomArray);} );
 selectionSort.addEventListener("click", ()=>{selection_sort(randomArray);} );
 insertionSort.addEventListener("click", ()=>{insertion_sort(randomArray);});
+heapSort.addEventListener("click", ()=>{heap_sort(randomArray)});
+
 
 // how I'm gonna call the heap sort function
 //()=>{heap_sort(0,randomArray.length - 1)}
