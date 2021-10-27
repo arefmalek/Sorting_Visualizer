@@ -180,34 +180,42 @@ async function heap_sort(arr) {
 
     async function compareLeft(index) {
         left = getLeftChild(index);
-        if (left < index) {return false;}
+        if (left === -1) {return false;}
         return (arr[index] < arr[left]);
     }
     async function compareRight(index) {
         right = getLeftChild(index);
-        if (right < index) {return false;}
+        if (right === -1) {return false;}
         return (arr[index] < arr[right]);
+    }
+
+    async function heapify(index) {
+        /**
+         * Builds a max heap with the certain index
+         */
     }
     // build heap from bottom-up
     let idx = Math.floor(arr.length / 2) - 1;
     while (idx > 0) {
         let tempNode = idx;
         // basically form heap
-        while (compareLeft(tempNode) || compareRight(tempNode)) {
-            console.log("passed");
-            let leftVal = MAX_ARR_VAL + 1;
-            let rightVal = MAX_ARR_VAL + 1;
-            if (compareLeft(tempNode)) {leftVal = arr[getLeftChild(tempNode)];}
-            if (compareRight(tempNode)) {rightVal = arr[getRightChild(tempNode)];}
+        while (tempNode >= 0 && (compareLeft(tempNode) || compareRight(tempNode))) {
+            let leftIndex = getLeftChild(tempNode);
+            let rightIndex = getRightChild(tempNode);
 
             let minDex = -1;
-            if (leftVal < rightVal) {minDex = left;}
-            else {minDex = right}
+            if (leftIndex !== -1) {minDex = rightIndex;}
+            else if (rightIndex !== -1) {minDex = leftIndex;}
+            else {minDex = Math.min(arr[leftIndex], arr[rightIndex]);}
 
-            // swap (we're guaranteed to enter this)
-            swap(arr, tempNode, minDex);
+            console.log(tempNode, leftIndex, rightIndex, minDex);
+
+            if (minDex >= 0 && await compare_to(tempNode, minDex) === 1){
+                await swap(arr, tempNode, minDex);
+            }
             tempNode = minDex;
         }
+        console.log(idx)
         idx -= 1;
     }
 
