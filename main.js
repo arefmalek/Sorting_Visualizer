@@ -113,6 +113,13 @@ async function swap(arr, index1, index2) {
 
 }
 
+/**
+ * 
+ * @param {array that we compare values in} arr 
+ * @param {first index of array for comparison} index1 
+ * @param {second index of array for comparison} index2 
+ * @returns -1 if index1 > index2, otherwise we return 1
+ */
 async function compare_to(arr, index1, index2) {
     colors[index1] = COMPARE_COLOR;
     colors[index2] = COMPARE_COLOR;
@@ -167,57 +174,57 @@ async function insertion_sort(arr) {
     }
 }
 
+/**
+ * 
+ * @param {Array to be heapified then sorted} arr 
+ */
 async function heap_sort(arr) {
-    async function getLeftChild(index) {
+    function getLeftChild(index) {
         return ((index * 2 + 1 < randomArray.length) ? index * 2 + 1: -1);
     }
-    async function getRightChild(index) {
+    function getRightChild(index) {
         return ((index * 2 + 2 < randomArray.length) ? index * 2 + 2: -1);
     }
-    async function getParent(index) {
+    function getParent(index) {
         return ((index != 0) ? index / 2 - 1: -1);
     }
 
-    async function compareLeft(index) {
-        left = getLeftChild(index);
+    function compareLeft(index) {
+        const left = getLeftChild(index);
         if (left === -1) {return false;}
-        return (arr[index] < arr[left]);
+        return (arr[index] > arr[left]);
     }
-    async function compareRight(index) {
-        right = getLeftChild(index);
+    function compareRight(index) {
+        const right = getRightChild(index);
         if (right === -1) {return false;}
-        return (arr[index] < arr[right]);
+        return (arr[index] > arr[right]);
     }
 
-    async function heapify(index) {
-        /**
-         * Builds a max heap with the certain index
-         */
-    }
-    // build heap from bottom-up
+    // we are building a min heap (priority queue)
     let idx = Math.floor(arr.length / 2) - 1;
-    while (idx > 0) {
+    while (idx >= 0) {
         let tempNode = idx;
         // basically form heap
+        console.log(compareLeft(tempNode), compareRight(tempNode));
         while (tempNode >= 0 && (compareLeft(tempNode) || compareRight(tempNode))) {
-            let leftIndex = getLeftChild(tempNode);
-            let rightIndex = getRightChild(tempNode);
+            // get left and right
+            const leftIndex = getLeftChild(tempNode);
+            const rightIndex = getRightChild(tempNode);
 
-            let minDex = -1;
-            if (leftIndex !== -1) {minDex = rightIndex;}
-            else if (rightIndex !== -1) {minDex = leftIndex;}
-            else {minDex = Math.min(arr[leftIndex], arr[rightIndex]);}
+            // we guarantee minDex is positive b/c we 
+            var minDex = -1;
+            if (leftIndex === -1) {minDex = rightIndex;}
+            else if (rightIndex === -1) {minDex = leftIndex;}
+            else {minDex  = (arr[leftIndex] < arr[rightIndex]) ? leftIndex: rightIndex;}
 
-            console.log(tempNode, leftIndex, rightIndex, minDex);
-
-            if (minDex >= 0 && await compare_to(tempNode, minDex) === 1){
-                await swap(arr, tempNode, minDex);
-            }
+            console.log(arr, tempNode, minDex);
+            await swap(arr, tempNode, minDex);
             tempNode = minDex;
         }
-        console.log(idx)
         idx -= 1;
     }
+    console.log(arr)
+    draw_array(canvas, arr, colors);
 
     // sort down
 }
