@@ -114,6 +114,7 @@ async function swap(arr, index1, index2) {
 }
 
 /**
+ * Function that compares values at two different indexes of an array
  * 
  * @param {array that we compare values in} arr 
  * @param {first index of array for comparison} index1 
@@ -200,33 +201,57 @@ async function heap_sort(arr) {
         return (arr[index] > arr[right]);
     }
 
-    // we are building a min heap (priority queue)
-    let idx = Math.floor(arr.length / 2) - 1;
-    while (idx >= 0) {
-        let tempNode = idx;
-        // basically form heap
-        console.log(compareLeft(tempNode), compareRight(tempNode));
-        while (tempNode >= 0 && (compareLeft(tempNode) || compareRight(tempNode))) {
+    /**
+     * function that implements the "sink down" operation of a binary heap
+     * @param {current node to be "swam down"} index 
+     */
+    async function sinkDown(index) {
+        while (index >= 0 && (compareLeft(index) || compareRight(index))) {
             // get left and right
-            const leftIndex = getLeftChild(tempNode);
-            const rightIndex = getRightChild(tempNode);
+            const leftIndex = getLeftChild(index);
+            const rightIndex = getRightChild(index);
 
             // we guarantee minDex is positive b/c we 
             var minDex = -1;
             if (leftIndex === -1) {minDex = rightIndex;}
             else if (rightIndex === -1) {minDex = leftIndex;}
-            else {minDex  = (arr[leftIndex] < arr[rightIndex]) ? leftIndex: rightIndex;}
+            else {
+                minDex = (await compare_to(arr, leftIndex, rightIndex) === 1) ? leftIndex: rightIndex;
+            }
 
-            console.log(arr, tempNode, minDex);
-            await swap(arr, tempNode, minDex);
-            tempNode = minDex;
+            await swap(arr, index, minDex);
+            index = minDex;
         }
+    }
+
+    // we are building a min heap (priority queue)
+    let idx = Math.floor(arr.length / 2) - 1;
+    while (idx >= 0) {
+        let tempNode = idx;
+        // basically form heap
+        await sinkDown(tempNode);
         idx -= 1;
     }
-    console.log(arr)
     draw_array(canvas, arr, colors);
+    console.log(arr);
 
-    // sort down
+    // check heapify
+    for (let i = 0; i <= Math.floor(arr.length / 2) - 1; i++) {
+        if (compareLeft(i) || compareRight(i)) {
+            const left = getLeftChild(i);
+            const right = getRightChild(i)
+            console.log("not heap", i, left, right);
+            console.log(arr[i], left, right);
+        }
+    }
+
+    // sort down the array
+    // 1. delete max (easy b/c it'll be the array)
+    // 2. swap heap with last element in array
+    // 3. sink down the last element on the heap, b/c we have heap structure we know the next 2 smallest 
+    // values are immediately in front of the 
+
+   // sort down
 }
 
 
