@@ -116,10 +116,10 @@ async function swap(arr, index1, index2) {
 /**
  * Function that compares values at two different indexes of an array
  * 
- * @param {array that we compare values in} arr 
- * @param {first index of array for comparison} index1 
- * @param {second index of array for comparison} index2 
- * @returns -1 if index1 > index2, otherwise we return 1
+ * @param {array of intergers} arr 
+ * @param {int} index1 - first index of array for comparison
+ * @param {int} index2 - second index of array for comparison
+ * @returns -1 if arr[index1] > arr[index2], otherwise we return 1
  */
 async function compare_to(arr, index1, index2) {
     colors[index1] = COMPARE_COLOR;
@@ -180,34 +180,32 @@ async function insertion_sort(arr) {
  * @param {Array to be heapified then sorted} arr 
  */
 async function heap_sort(arr) {
-    function getLeftChild(index) {
-        return ((index * 2 + 1 < randomArray.length) ? index * 2 + 1: -1);
+    function getLeftChild(index, arrLength = arr.length) {
+        return ((index * 2 + 1 < arrLength) ? index * 2 + 1: -1);
     }
-    function getRightChild(index) {
-        return ((index * 2 + 2 < randomArray.length) ? index * 2 + 2: -1);
-    }
-    function getParent(index) {
-        return ((index != 0) ? index / 2 - 1: -1);
+    function getRightChild(index, arrLength = arr.length) {
+        return ((index * 2 + 2 < arrLength) ? index * 2 + 2: -1);
     }
 
-    function compareLeft(index) {
-        const left = getLeftChild(index);
-        if (left === -1) {return false;}
-        return (arr[index] > arr[left]);
-    }
-    function compareRight(index) {
-        const right = getRightChild(index);
-        if (right === -1) {return false;}
-        return (arr[index] > arr[right]);
-    }
-
+    // first step is that I need to build a max heap here
     /**
-     * function that implements the "sink down" operation of a binary heap
-     * @param {current node to be "swam down"} index 
+     * compares the left child of the heap with the current node
+     * @param {index that we compare the left child with} index 
      */
+    function lessThanLeft(index, arrLength = arr.length) {
+        const left = getLeftChild(index, arr.length);
+        if (left === -1) {return false;}
+        return (arr[index] < arr[left]);
+    }
+    function lessThanRight(index, arrLength = arr.length) {
+        const right = getRightChild(index, arrLength);
+        if (right === -1) {return false;}
+        return (arr[index] < arr[right]);
+    }
+    
     async function sinkDown(index) {
-        while (index >= 0 && (compareLeft(index) || compareRight(index))) {
-            // get left and right
+        while (index >= 0 && (lessThanLeft(index) || lessThanRight(index))) {
+             // get left and right
             const leftIndex = getLeftChild(index);
             const rightIndex = getRightChild(index);
 
@@ -216,11 +214,11 @@ async function heap_sort(arr) {
             if (leftIndex === -1) {minDex = rightIndex;}
             else if (rightIndex === -1) {minDex = leftIndex;}
             else {
-                minDex = (await compare_to(arr, leftIndex, rightIndex) === 1) ? leftIndex: rightIndex;
+                minDex = (await compare_to(arr, leftIndex, rightIndex) === -1) ? leftIndex: rightIndex;
             }
 
             await swap(arr, index, minDex);
-            index = minDex;
+            index = minDex;           
         }
     }
 
@@ -233,25 +231,40 @@ async function heap_sort(arr) {
         idx -= 1;
     }
     draw_array(canvas, arr, colors);
-    console.log(arr);
-
-    // check heapify
-    for (let i = 0; i <= Math.floor(arr.length / 2) - 1; i++) {
-        if (compareLeft(i) || compareRight(i)) {
-            const left = getLeftChild(i);
-            const right = getRightChild(i)
-            console.log("not heap", i, left, right);
-            console.log(arr[i], left, right);
-        }
-    }
 
     // sort down the array
     // 1. delete max (easy b/c it'll be the array)
     // 2. swap heap with last element in array
     // 3. sink down the last element on the heap, b/c we have heap structure we know the next 2 smallest 
     // values are immediately in front of the 
+    let subArrLength = arr.length;
+    while (subArrLength > 0) {
+        let index = 0
+        // "delete max"
+        await swap(arr, index, --subArrLength);
 
-   // sort down
+        while (index < subArrLength && (lessThanLeft(index, subArrLength) || lessThanRight(index, subArrLength))) {
+             // get left and right
+            const leftIndex = (index * 2 + 1 < subArrLength) ? index * 2 + 1: -1;
+            const rightIndex =(index * 2 + 2 < subArrLength) ? index * 2 + 2: -1;
+
+            // we guarantee minDex is positive b/c we 
+            var minDex = subArrLength;
+            if (leftIndex === -1) {minDex = rightIndex;}
+            else if (rightIndex === -1) {minDex = leftIndex;}
+            else {
+                minDex = (await compare_to(arr, leftIndex, rightIndex) === -1) ? leftIndex: rightIndex;
+            }
+
+            if (minDex < subArrLength && minDex > 0) {
+                await swap(arr, index, minDex);
+            }
+
+            index = minDex;           
+        }
+
+    }
+    draw_array(canvas, arr, colors);
 }
 
 
