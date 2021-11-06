@@ -2,40 +2,55 @@
 
 <html>
     <head>
-        <meta charset="UTF-8" />
+        <title>Sorting Visualizer</title>
+
+        <meta charset="UTF-8">
+        <meta name="keywords" content="Aref, Aref Malek, Purdue, Projects, Sorting Visualizer, Algorithms">
+        <meta name="description" content="Sorting Algorithm Visualizer">
+        <meta name="author" content="Aref Malek">
+
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <link rel="stylesheet" href="./styles.css">
+
+
     </head>
-<h1>Hello!</h1>
+    <body>
+        <h1>Sorting Algorithm Visualizer!</h1>
 
-<div class="slidecontainer">
-    <input type="range" min="10" max="100" value="50" class="slider" id="slider">
-    <p>Current Size: <span id="demo"></span></p>
-  </div>
+        <div class="slidecontainer">
+            <input type="range" min="10" max="100" value="50" class="slider" id="slider">
+            <p>Current Array Size: <span id="demo"></span></p>
+          </div>
+      
+        <div class="speedcontainer">
+            <input type="range" min="1" max="100" value="5" class="slider" id="speedSlider">
+            <p>Current Operation Delay (lower is faster): <span id="speedValue"></span> ms</p>
+        </div>
 
-<div class="speedcontainer">
-    <input type="range" min="1" max="100" value="5" class="slider" id="speedSlider">
-    <p>Current Delay (lower is faster): <span id="speedValue"></span> ms</p>
-</div>
+        <button type="button" onclick="resetArray()">Generate new array</button>
 
-<button type="button" onclick="resetArray()">Generate new array</button>
+        <button id="bubbleSort">
+            Bubble Sort
+        </button>
 
-<button id="bubbleSort">
-    Bubble Sort
-</button>
+        <button id="selectionSort">
+            Selection Sort
+        </button>
 
-<button id="selectionSort">
-    Selection Sort
-</button>
+        <button id="insertionSort">
+            Insertion Sort
+        </button>
 
-<button id="insertionSort">
-    Insertion Sort
-</button>
+        <button id="heapSort">
+            Heap Sort
+        </button>
+        <canvas id="myCanvas" width="800" height="400" style="border:1px solid #c3c3c3;">
+                Your browser does not support the canvas element :,(
+        </canvas>
 
-<button id="heapSort">
-    Heap Sort
-</button>
-<canvas id="myCanvas" width="800" height="400" style="border:1px solid #c3c3c3;">
-        Your browser does not support the canvas element :,(
-</canvas>
-
-</html>
-<script src="main.js"></script>
+            </body>
+        
+        
+        </html>
+        <script src="main.js"></script>
