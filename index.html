@@ -18,42 +18,47 @@
     <body>
         <div class="intro">
             <h1>Sorting Algorithm Visualizer!</h1>
-        </div>
 
-        <div class="slider-container">
-            <div class="slider">
-                <input type="range" min="10" max="100" value="50" class="slider" id="sizeSlider">
-                <p>Current Array Size: <span id="sizeValue"></span></p>
-              </div>
+            <div class="slider-container">
+                <div class="slider">
+                    <h3>Current Array Size: <span id="sizeValue"></span></h3>
+                    <input type="range" min="10" max="100" value="50" class="slider" id="sizeSlider">
+                  </div>
       
-            <div class="slider">
-                <input type="range" min="1" max="100" value="5" class="slider" id="speedSlider">
-                <p>Current Operation Delay (lower is faster): <span id="speedValue"></span> ms</p>
+                <div class="slider">
+                    <h3>Current Delay (lower is faster): <span id="speedValue"></span> ms</h3>
+                    <input type="range" min="1" max="100" value="5" class="slider" id="speedSlider">
+                </div>
             </div>
+        
+            <button class="button" type="button" onclick="resetArray()">Generate new array</button>
         </div>
-        <button type="button" onclick="resetArray()">Generate new array</button>
 
-        <button id="bubbleSort">
-            Bubble Sort
-        </button>
 
-        <button id="selectionSort">
-            Selection Sort
-        </button>
 
-        <button id="insertionSort">
-            Insertion Sort
-        </button>
+        <div class="sort-button-container">
+            <button id="bubbleSort" class="button">
+                Bubble Sort
+            </button>
 
-        <button id="heapSort">
-            Heap Sort
-        </button>
-        <canvas id="myCanvas" width="800" height="400" style="border:1px solid #c3c3c3;">
-                Your browser does not support the canvas element :,(
-        </canvas>
+            <button id="selectionSort" class="button">
+                Selection Sort
+            </button>
 
-            </body>
-        
-        
-        </html>
-        <script src="main.js"></script>
+            <button id="insertionSort" class="button">
+                Insertion Sort
+            </button>
+
+            <button id="heapSort" class="button">
+                Heap Sort
+            </button>
+        </div>
+        <div class="canvas-container">
+            <canvas id="myCanvas" width="800" height="400" style="border:1px solid #c3c3c3;">
+                    Your browser does not support the canvas element :,(
+            </canvas>
+        </div>
+    </body>
+</html>
+
+<script src="main.js"></script>
