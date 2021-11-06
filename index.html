@@ -16,18 +16,21 @@
 
     </head>
     <body>
-        <h1>Sorting Algorithm Visualizer!</h1>
-
-        <div class="slidecontainer">
-            <input type="range" min="10" max="100" value="50" class="slider" id="slider">
-            <p>Current Array Size: <span id="demo"></span></p>
-          </div>
-      
-        <div class="speedcontainer">
-            <input type="range" min="1" max="100" value="5" class="slider" id="speedSlider">
-            <p>Current Operation Delay (lower is faster): <span id="speedValue"></span> ms</p>
+        <div class="intro">
+            <h1>Sorting Algorithm Visualizer!</h1>
         </div>
 
+        <div class="slider-container">
+            <div class="slider">
+                <input type="range" min="10" max="100" value="50" class="slider" id="sizeSlider">
+                <p>Current Array Size: <span id="sizeValue"></span></p>
+              </div>
+      
+            <div class="slider">
+                <input type="range" min="1" max="100" value="5" class="slider" id="speedSlider">
+                <p>Current Operation Delay (lower is faster): <span id="speedValue"></span> ms</p>
+            </div>
+        </div>
         <button type="button" onclick="resetArray()">Generate new array</button>
 
         <button id="bubbleSort">

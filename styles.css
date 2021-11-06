@@ -4,3 +4,22 @@ html, body {
     background: #7cc6fe;
     font-family: sans-serif;
 }
+
+
+.intro {
+    text-align: center;
+    margin-left: 10vw;
+    margin-right: 10vw;
+    padding: 2em;
+    padding-top: 5vh;
+}
+.intro h1 {
+    font-size: 2.75em;
+    color: azure;
+}
+.slider-container {
+    padding: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
