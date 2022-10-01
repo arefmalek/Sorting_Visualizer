@@ -10,12 +10,14 @@ const MAX_ARR_VAL = 100;
 
 // COLORS
 const DEFAULT_COLOR = "black"
-const COMPARE_COLOR = "red";
+const COMPARE_COLOR = "orange";
 const SWAP_COLOR = "green"
 
 // stuff we get from html side
 var sizeSlider= document.getElementById("sizeSlider");
 var sizeOutput = document.getElementById("sizeValue");
+
+
 sizeOutput.innerHTML = sizeSlider.value;
 var ARR_SIZE = sizeSlider.value;
 resetArray();
