@@ -11,48 +11,45 @@
 
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        <link rel="stylesheet" href="./styles.css">
-
+        <!-- <link rel="stylesheet" href="./styles.css"> -->
 
     </head>
     <body>
         <div class="intro">
             <h1>Sorting Algorithm Visualizer!</h1>
 
-            <div class="slider-container">
-                <div class="slider">
-                    <h3>Current Array Size: <span id="sizeValue"></span></h3>
-                    <input type="range" min="10" max="100" value="50" class="slider" id="sizeSlider">
-                  </div>
-      
-                <div class="slider">
-                    <h3>Current Delay (lower is faster): <span id="speedValue"></span> ms</h3>
-                    <input type="range" min="1" max="100" value="5" class="slider" id="speedSlider">
-                </div>
-            </div>
-        
-            <button class="button" type="button" onclick="resetArray()">Generate new array</button>
         </div>
 
+        <div class="slider-container">
+            <div class="slider">
+                <h3>Current Array Size: <span id="sizeValue"></span></h3>
+                <input type="range" min="10" max="100" value="50" class="slider" id="sizeSlider">
+              </div>
+      
+            <div class="slider">
+                <h3>Current Delay (lower is faster): <span id="speedValue"></span> ms</h3>
+                <input type="range" min="1" max="50" value="5" class="slider" id="speedSlider">
+            </div>
+        </div>
+        
 
 
         <div class="sort-button-container">
-            <button id="bubbleSort" class="button">
-                Bubble Sort
-            </button>
-
-            <button id="selectionSort" class="button">
-                Selection Sort
-            </button>
-
-            <button id="insertionSort" class="button">
-                Insertion Sort
-            </button>
-
-            <button id="heapSort" class="button">
-                Heap Sort
-            </button>
+            <label for="Sorting_Function">Choose a car:</label>
+            <select id="func" name="funcList" form="funcForm">
+              <option value="bubbleSort">bubbleSort</option>
+              <option value="selectionSort">selectionSort</option>
+              <option value="insertionSort">insertionSort</option>
+              <option value="heapSort">heapSort</option>
+            </select>
         </div>
+
+        <div class="sorting-buttons">
+            <button class="button" type="randomizeBtn" onclick="randomizeArray()">Generate new array</button>
+            <button class="button" type="button" onclick="getSettings()">Output settings</button>
+        </div>
+
+
         <div class="canvas-container">
             <canvas id="myCanvas" width="800" height="400" style="border:1px solid #c3c3c3;">
                     Your browser does not support the canvas element :,(
