@@ -1,22 +1,25 @@
-
-function is_sorted(arr) {
-    arr_sort = [...arr];
-    arr_sort.sort();
-
+function isSorted(arr) {
+    return arr.every((val, i, arr) => i==0 || val >= arr[i - 1]);
 }
+
+
 
 async function bubble_sort(arr) {
     let compare = true;
     while (compare === true) {
         compare = false;
         for (let i = 0; i < arr.length - 1; i++) {
-            if (await compare_to(arr, i, i + 1) === -1) {
+            // swap
+            if (arr[i] > arr[i+1]) {
                 compare = true;
-                await swap(arr, i, i+1);
+                temp = arr[i+1];
+                arr[i+1] = arr[i];
+                arr[i] = temp;
             }
         }
     }
-    draw_array(canvas, arr, colors);
+
+    return arr;
 }
 
 async function selection_sort(arr) {
@@ -137,4 +140,20 @@ async function heap_sort(arr) {
 
 
 async function merge_sort(leftIndex, rightIndex) {
+}
+
+function test() {
+    rand_arr = [];
+    let s = 20                                      
+    let maxVal = 100
+    // build random array
+    for(let i = 0; i < s; i++) {
+        rand_arr.push(Math.floor(Math.random()*maxVal));
+    }
+
+    // test sorting algo
+    bubble_sort(rand_arr).then(result => {
+        console.log(result);
+        console.log(isSorted(result));
+    });
 }
