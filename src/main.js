@@ -14,9 +14,22 @@ function resetArray() {
     array = [];
 }
 
+async function sleep() {
+    return new Promise(temp => {
+        setTimeout(() => temp(2), SPEED); // idk wtf this means but it works
+    });
+
+}
+
 
 
 //#Array Operation functions
+function swap(i, j) {
+    let temp = array[i];
+    array[i] = array[j];
+    array[j] = temp;
+}
+
 function drawBar(index, value, color=DEFAULT_COLOR) {
     ctx.beginPath();
     // clear the previous bar
@@ -57,6 +70,14 @@ function randomizeArray(){
 
 function runSort() {
     // get the sorting function
+    running = true;
+    
+    if (running) {
+        // find the sorting value then run the algo
+        algo = sortingAlgo.value;
+        console.log(algo);
+    }
+
     bubble_sort(array).then(sorted => {
         array = sorted;
         drawArray();
@@ -92,6 +113,8 @@ var ARR_SIZE;
 var speedSlider = document.getElementById("speedSlider");
 var speedOutput = document.getElementById("speedValue"); // get the output from the slider span
 var SPEED;
+// getting sorting algorithm
+var sortingAlgo = document.getElementById("sortingFunction");
 
 
 // everytime we mess with slider, it updates values inside
@@ -104,6 +127,7 @@ sizeSlider.oninput = function() {
 // initializing stuff I use everywhere
 let array = []
 const MAX_ARR_VAL = 100;
+let running = false;
 
 // COLORS
 const DEFAULT_COLOR = "black";

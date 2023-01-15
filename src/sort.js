@@ -12,10 +12,13 @@ async function bubble_sort(arr) {
             // swap
             if (arr[i] > arr[i+1]) {
                 compare = true;
-                temp = arr[i+1];
-                arr[i+1] = arr[i];
-                arr[i] = temp;
+                // swap
+                swap(i, i+1);
+                drawBar(i, array[i], "red");
+                drawBar(i+1, array[i+1], "red");
+                await sleep();
             }
+            drawArray();
         }
     }
 
