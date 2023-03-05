@@ -105,27 +105,6 @@ async function heapSort(arr) {
         return (index != 0) ? Math.floor((index-1)/2): -1
     }
 
-    const swimUp = (index, arr) => {
-        let parentIndex = getParentIndex(index);
-        while (parentIndex != -1 && arr[parentIndex] < arr[index]) {
-            // do the swap and update the value
-            console.log(parentIndex, index);
-
-            drawArray();
-            drawBar(index, arr[index], "red");
-            drawBar(parentIndex, arr[parentIndex], "red");
-
-            swap(parentIndex, index);
-
-            // info for next iteration
-            index = parentIndex;
-            parentIndex = getParentIndex(index);
-        }
-    }
-
-    const sinkDown = (index) => {
-    }
-
     // construct maxheap: swim up for each index
     for (let index = 1; index < arr.length; index++) {
 
@@ -149,7 +128,6 @@ async function heapSort(arr) {
         }
     }
 
-
     // removeMax and re-establish heap
     for (let i = arr.length-1; i > 0; i--) {
         // swap maxNode with end of the heap
@@ -169,10 +147,9 @@ async function heapSort(arr) {
             return (index * 2 + 2 < i) ? arr[index * 2 + 2]: -1;
         }
 
-
         // sink down the node until in the correct position
         let index = 0;
-        while ((getLeftIndex(index) < i) && // have at least 1 child and less than both nodes
+        while ((getLeftIndex(index) < i) && // heap has at least 1 child node (left firs always)
                 (arr[index] < getLeftChild(index, i) || arr[index] < getRightChild(index, i))
         ) {
             // swap index with larger of two children

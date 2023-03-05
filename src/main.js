@@ -1,146 +1,147 @@
-
-
 //# Canvas/ array operations
 
 // clear the canvas
 function clearCanvas() {
-    ctx.beginPath();
-    ctx.fillStyle = BACKGROUND_COLOR;
-    ctx.fillRect(0,0,canvas.width, canvas.height);
-    ctx.closePath();
+  ctx.beginPath();
+  ctx.fillStyle = BACKGROUND_COLOR;
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  ctx.closePath();
 }
 
 function resetArray() {
-    array = [];
+  array = [];
 }
 
 async function sleep() {
-    return new Promise(temp => {
-        setTimeout(() => temp(2), SPEED); // timeout this function for duration SPEED
-    });
-
+  return new Promise((temp) => {
+    setTimeout(() => temp(2), SPEED); // timeout this function for duration SPEED
+  });
 }
-
-
 
 //#Array Operation functions
 function swap(i, j) {
-    let temp = array[i];
-    array[i] = array[j];
-    array[j] = temp;
+  let temp = array[i];
+  array[i] = array[j];
+  array[j] = temp;
 }
 
 /**
- * 
- * @param {index in array to draw} index 
- * @param {The value of the index in array} value 
- * @param {The new color to draw the index} color 
+ *
+ * @param {index in array to draw} index
+ * @param {The value of the index in array} value
+ * @param {The new color to draw the index} color
  */
-function drawBar(index, value, color=DEFAULT_COLOR) {
-    ctx.beginPath();
-    // clear the previous bar
-    ctx.fillStyle = BACKGROUND_COLOR;
-    ctx.fillRect(Math.ceil(WIDTH / ARR_SIZE * index), 0, Math.floor(WIDTH / ARR_SIZE), HEIGHT);
+function drawBar(index, value, color = DEFAULT_COLOR) {
+  ctx.beginPath();
+  // clear the previous bar
+  ctx.fillStyle = BACKGROUND_COLOR;
+  ctx.fillRect(
+    Math.ceil((WIDTH / ARR_SIZE) * index),
+    0,
+    Math.floor(WIDTH / ARR_SIZE),
+    HEIGHT
+  );
 
-    // draw new bar from the bottom
-    ctx.fillStyle = color;
-    ctx.fillRect(Math.ceil(WIDTH / ARR_SIZE * index), HEIGHT, Math.floor(WIDTH / ARR_SIZE), Math.floor(-HEIGHT*(value/MAX_ARR_VAL)) );
+  // draw new bar from the bottom
+  ctx.fillStyle = color;
+  ctx.fillRect(
+    Math.ceil((WIDTH / ARR_SIZE) * index),
+    HEIGHT,
+    Math.floor(WIDTH / ARR_SIZE),
+    Math.floor(-HEIGHT * (value / MAX_ARR_VAL))
+  );
 
-    ctx.closePath();
+  ctx.closePath();
 }
 
-function drawArray(){
-    clearCanvas();
+function drawArray() {
+  clearCanvas();
 
-    for (let i = 0; i < array.length; i++) {
-        // draw bar in a certain color
-        let val = array[i];
-        drawBar(i, val, DEFAULT_COLOR);
-    }
+  for (let i = 0; i < array.length; i++) {
+    // draw bar in a certain color
+    let val = array[i];
+    drawBar(i, val, DEFAULT_COLOR);
+  }
 }
 
-function randomizeArray(){
-    // clear canvas and array
-    clearCanvas();
-    resetArray();
+function randomizeArray() {
+  // clear canvas and array
+  clearCanvas();
+  resetArray();
 
-    // build random array
-    for(let i = 0; i < ARR_SIZE; i++) {
-        array.push(Math.floor(Math.random()*MAX_ARR_VAL));
-    }
+  // build random array
+  for (let i = 0; i < ARR_SIZE; i++) {
+    array.push(Math.floor(Math.random() * MAX_ARR_VAL));
+  }
 
-    // draw that array
-    drawArray();
+  // draw that array
+  drawArray();
 }
-
 
 function runSort() {
-    // get the sorting function
+  // get the sorting function
 
-    if (!running) {
-        running = true;
+  if (!running) {
+    running = true;
 
-        let sortingAlgorithm;
-        const algoName = sortingAlgo.value;
-        switch (algoName) {
-            case "bubble":
-              sortingAlgorithm = bubbleSort;
-              break;
-            case "selection":
-              sortingAlgorithm = selectionSort;
-              break;
-            case "insertion":
-              sortingAlgorithm = insertionSort;
-              break;
-            case "merge":
-              sortingAlgorithm = mergeSort;
-              break;
-            case "quick": // TODO
-              sortingAlgorithm = quickSort;
-              break;
-            case "heap":
-              sortingAlgorithm = heapSort;
-              break;
-            default:
-              console.log("Invalid input");
-          }
-
-        sortingAlgorithm(array).then(sorted => {
-                array = sorted;
-                drawArray();
-            }
-        );
-
-        running = false;
-    }
-    else {
-        console.log("Cannot restart: sorting is actively running!")
+    let sortingAlgorithm;
+    const algoName = sortingAlgo.value;
+    switch (algoName) {
+      case "bubble":
+        sortingAlgorithm = bubbleSort;
+        break;
+      case "selection":
+        sortingAlgorithm = selectionSort;
+        break;
+      case "insertion":
+        sortingAlgorithm = insertionSort;
+        break;
+      case "merge":
+        sortingAlgorithm = mergeSort;
+        break;
+      case "quick": // TODO
+        sortingAlgorithm = quickSort;
+        break;
+      case "heap":
+        sortingAlgorithm = heapSort;
+        break;
+      default:
+        console.log("Invalid input");
     }
 
+    sortingAlgorithm(array).then((sorted) => {
+      array = sorted;
+      drawArray();
+    });
+
+    running = false;
+  } else {
+    console.log("Cannot restart: sorting is actively running!");
+  }
 }
 
 //#HTML Editing setup
 function speedInput() {
-    SPEED = speedSlider.value;
-    speedOutput.innerHTML = SPEED;
+  SPEED = speedSlider.value;
+  speedOutput.innerHTML = SPEED;
 }
 function sizeInput() {
-    ARR_SIZE = sizeSlider.value;
-    sizeOutput.innerHTML = ARR_SIZE;
+  ARR_SIZE = sizeSlider.value;
+  sizeOutput.innerHTML = ARR_SIZE;
 }
-
 
 // canvas setup
 var canvas = document.getElementById("myCanvas");
 var ctx = canvas.getContext("2d");
-const WIDTH = canvas.width, HEIGHT = canvas.height;
+const WIDTH = canvas.width,
+  HEIGHT = canvas.height;
 
 // button, slider setup
 randomizeBtn = document.getElementById("randomizeBtn");
 sortingBtn = document.getElementById("sortButton");
 
 // array size
-var sizeSlider= document.getElementById("sizeSlider");
+var sizeSlider = document.getElementById("sizeSlider");
 var sizeOutput = document.getElementById("sizeValue");
 var ARR_SIZE;
 // getting latency
@@ -150,19 +151,19 @@ var SPEED;
 // getting sorting algorithm
 var sortingAlgo = document.getElementById("sortingFunction");
 
-
 // everytime we mess with slider, it updates values inside
 speedSlider.oninput = speedInput;
 sizeSlider.oninput = () => {
-    sizeInput();
-    if (!running) {
-        console.log("running here!");
-        randomizeArray();
-    }
-}
+  sizeInput();
+  if (!running) {
+    console.log("running here!");
+    randomizeArray();
+  }
+};
+
 
 // initializing stuff I use everywhere
-let array = []
+let array = [];
 const MAX_ARR_VAL = 100;
 let running = false;
 
@@ -170,9 +171,7 @@ let running = false;
 const DEFAULT_COLOR = "black";
 const BACKGROUND_COLOR = "white";
 
-
-
-// first call 
+// first call
 speedInput();
 sizeInput();
 randomizeArray(); // randomize and draw the array

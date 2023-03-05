@@ -29,6 +29,23 @@ html, body {
     padding-right: 2em;
     padding-left: 2em;
 }
+.slider h3 {
+    color: azure;
+}
+
+
+.algo-selection-container {
+    padding: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.algo-selection-container label {
+    font-size: large;
+    color: azure;
+}
+
 .button {
     background-color: #4CAF50;
     border: none;
@@ -48,12 +65,15 @@ html, body {
     border-color: rgb(252, 0, 0);
     border-width: 0.1rem;
 }
-.sort-button-container {
+.sorting-button-container {
     padding: 10px;
     display: flex;
-    flex-wrap: wrap;
+    align-items: center;
     justify-content: center;
 }
+
+
+
 .canvas-container {
     text-align: center;
 }
