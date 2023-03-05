@@ -16,7 +16,7 @@ function resetArray() {
 
 async function sleep() {
     return new Promise(temp => {
-        setTimeout(() => temp(2), SPEED); // idk wtf this means but it works
+        setTimeout(() => temp(2), SPEED); // timeout this function for duration SPEED
     });
 
 }
@@ -30,6 +30,12 @@ function swap(i, j) {
     array[j] = temp;
 }
 
+/**
+ * 
+ * @param {index in array to draw} index 
+ * @param {The value of the index in array} value 
+ * @param {The new color to draw the index} color 
+ */
 function drawBar(index, value, color=DEFAULT_COLOR) {
     ctx.beginPath();
     // clear the previous bar
@@ -74,11 +80,36 @@ function runSort() {
     
     if (running) {
         // find the sorting value then run the algo
-        algo = sortingAlgo.value;
-        console.log(algo);
+        console.log("Request while running!");
     }
 
-    bubble_sort(array).then(sorted => {
+
+    let sortingAlgorithm;
+    const algoName = sortingAlgo.value;
+    switch (algoName) {
+        case "bubble":
+          sortingAlgorithm = bubbleSort;
+          break;
+        case "selection":
+          sortingAlgorithm = selectionSort;
+          break;
+        case "insertion":
+          sortingAlgorithm = insertionSort;
+          break;
+        case "merge":
+          sortingAlgorithm = mergeSort;
+          break;
+        case "quick": // TODO
+          sortingAlgorithm = quickSort;
+          break;
+        case "heap":
+          sortingAlgorithm = heapSort;
+          break;
+        default:
+          console.log("Invalid input");
+      }
+
+    sortingAlgorithm(array).then(sorted => {
         array = sorted;
         drawArray();
     }
