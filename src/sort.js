@@ -1,7 +1,21 @@
-function isSorted(arr) {
-    return arr.every((val, i, arr) => i==0 || val >= arr[i - 1]);
+
+const isSorted = (array) => {
+    for (let i = 1; i < array.length; i++) {
+        if (array[i-1] > array[i]) {
+            return false;
+        }
+    }
+    return true;
 }
 
+const isMaxHeap = (array) => {
+    for (let i = 1; i < array.length; i++) {
+        if (array[Math.floor((i-1)/2)] < array[i]) {
+            return false;
+        }
+    }
+    return true;
+}
 
 
 async function bubbleSort(arr) {
@@ -79,34 +93,101 @@ async function insertionSort(arr) {
  * @param {Array to construct heap from, then sort} arr 
  */
 async function heapSort(arr) {
-    let getLeftChild = (index) => {
-        return (index * 2 + 1 < arr.length) ? arr[index * 2 + 1]: -1;
+    const getLeftIndex = (index) => {
+        return (index * 2 + 1 < arr.length) ? index * 2 + 1: -1;
     }
 
-    let getRightChild = (index) => {
-        return (index * 2 + 2 < arr.length) ? arr[index * 2 + 2]: -1;
+    const getRightIndex = (index) => {
+        return (index * 2 + 2 < arr.length) ? index * 2 + 2: -1;
     }
 
-    let getParentIndex = (index) => {
+    const getParentIndex = (index) => {
         return (index != 0) ? Math.floor((index-1)/2): -1
     }
 
-    let swimUp = (index) => {
+    const swimUp = (index, arr) => {
         let parentIndex = getParentIndex(index);
         while (parentIndex != -1 && arr[parentIndex] < arr[index]) {
             // do the swap and update the value
+            console.log(parentIndex, index);
+
+            drawArray();
+            drawBar(index, arr[index], "red");
+            drawBar(parentIndex, arr[parentIndex], "red");
+
             swap(parentIndex, index);
+
+            // info for next iteration
             index = parentIndex;
             parentIndex = getParentIndex(index);
-            drawArray();
-
         }
-
     }
 
-    for (let i = 0; i < arr.length; i++) {
-        swimUp(i)
-        console.log(i, arr[i], getLeftChild(i), getRightChild(i));
+    const sinkDown = (index) => {
+    }
+
+    // construct maxheap: swim up for each index
+    for (let index = 1; index < arr.length; index++) {
+
+        let parentIndex = getParentIndex(index);
+        // swim up until we find place in Max-Heap
+        while (parentIndex != -1 && arr[parentIndex] < arr[index]) {
+            // do the swap and update the value
+            // console.log(parentIndex, index);
+
+            drawArray();
+            drawBar(index, arr[index], "red");
+            drawBar(parentIndex, arr[parentIndex], "red");
+
+            swap(parentIndex, index);
+            await sleep();
+            drawArray();
+
+            // info for next iteration
+            index = parentIndex;
+            parentIndex = getParentIndex(index);
+        }
+    }
+
+
+    // removeMax and re-establish heap
+    for (let i = arr.length-1; i > 0; i--) {
+        // swap maxNode with end of the heap
+        drawArray();
+        drawBar(0, arr[0], "red");
+        drawBar(i, arr[i], "red");
+
+        swap(0, i);
+        await sleep();
+        drawArray();
+
+        // utility functions to get left and right children 
+        const getLeftChild = (index) => {
+            return (index * 2 + 1 < i) ? arr[index * 2 + 1]: -1;
+        }
+        const getRightChild = (index) => {
+            return (index * 2 + 2 < i) ? arr[index * 2 + 2]: -1;
+        }
+
+
+        // sink down the node until in the correct position
+        let index = 0;
+        while ((getLeftIndex(index) < i) && // have at least 1 child and less than both nodes
+                (arr[index] < getLeftChild(index, i) || arr[index] < getRightChild(index, i))
+        ) {
+            // swap index with larger of two children
+            let newIndex = (getLeftChild(index, i) > getRightChild(index, i)) ? getLeftIndex(index) : getRightIndex(index);
+
+            drawArray();
+            drawBar(index, arr[index], "red");
+            drawBar(newIndex, arr[newIndex], "red");
+
+            swap(index, newIndex);
+            await sleep();
+            drawArray();
+
+            index = newIndex;
+        }
     }
 
     return arr;

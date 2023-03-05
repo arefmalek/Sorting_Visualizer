@@ -76,44 +76,47 @@ function randomizeArray(){
 
 function runSort() {
     // get the sorting function
-    running = true;
-    
-    if (running) {
-        // find the sorting value then run the algo
-        console.log("Request while running!");
+
+    if (!running) {
+        running = true;
+
+        let sortingAlgorithm;
+        const algoName = sortingAlgo.value;
+        switch (algoName) {
+            case "bubble":
+              sortingAlgorithm = bubbleSort;
+              break;
+            case "selection":
+              sortingAlgorithm = selectionSort;
+              break;
+            case "insertion":
+              sortingAlgorithm = insertionSort;
+              break;
+            case "merge":
+              sortingAlgorithm = mergeSort;
+              break;
+            case "quick": // TODO
+              sortingAlgorithm = quickSort;
+              break;
+            case "heap":
+              sortingAlgorithm = heapSort;
+              break;
+            default:
+              console.log("Invalid input");
+          }
+
+        sortingAlgorithm(array).then(sorted => {
+                array = sorted;
+                drawArray();
+            }
+        );
+
+        running = false;
+    }
+    else {
+        console.log("Cannot restart: sorting is actively running!")
     }
 
-
-    let sortingAlgorithm;
-    const algoName = sortingAlgo.value;
-    switch (algoName) {
-        case "bubble":
-          sortingAlgorithm = bubbleSort;
-          break;
-        case "selection":
-          sortingAlgorithm = selectionSort;
-          break;
-        case "insertion":
-          sortingAlgorithm = insertionSort;
-          break;
-        case "merge":
-          sortingAlgorithm = mergeSort;
-          break;
-        case "quick": // TODO
-          sortingAlgorithm = quickSort;
-          break;
-        case "heap":
-          sortingAlgorithm = heapSort;
-          break;
-        default:
-          console.log("Invalid input");
-      }
-
-    sortingAlgorithm(array).then(sorted => {
-        array = sorted;
-        drawArray();
-    }
-    );
 }
 
 //#HTML Editing setup
@@ -150,9 +153,12 @@ var sortingAlgo = document.getElementById("sortingFunction");
 
 // everytime we mess with slider, it updates values inside
 speedSlider.oninput = speedInput;
-sizeSlider.oninput = function() {
+sizeSlider.oninput = () => {
     sizeInput();
-    randomizeArray();
+    if (!running) {
+        console.log("running here!");
+        randomizeArray();
+    }
 }
 
 // initializing stuff I use everywhere
@@ -170,4 +176,3 @@ const BACKGROUND_COLOR = "white";
 speedInput();
 sizeInput();
 randomizeArray(); // randomize and draw the array
-
