@@ -173,32 +173,28 @@ async function heapSort(arr) {
 // async function mergeSort(arr) {}
 async function recursiveMergeSort(arr) {
   if (arr.length == 1) {
-    console.log("base case", arr);
     return arr;
   }
   const half = Math.ceil(arr.length / 2);
-  let left = recursiveMergeSort(arr.slice(0, half));
-  let right = recursiveMergeSort(arr.slice(half));
+  let left = await recursiveMergeSort(arr.slice(0, half));
+  let right = await recursiveMergeSort(arr.slice(half));
 
-  let [leftIndex, rightIndex, i] = [0, 0, 0];
+  let [leftIndex, rightIndex] = [0, 0];
 
-  while (i < arr.length) {
-    if (leftIndex == left.length || left[leftIndex] > right[rightIndex]) {
-      arr.append(right[rightIndex]);
+  for (let i = 0; i < arr.length; i++) {
+    if (leftIndex == left.length || right[rightIndex] < left[leftIndex]) {
+      arr[i] = right[rightIndex];
       rightIndex++;
     } else if (
       rightIndex == right.length ||
-      right[rightIndex] >= left[leftIndex]
+      left[leftIndex] <= right[rightIndex]
     ) {
-      arr.append(left[leftIndex]);
+      arr[i] = left[leftIndex];
       leftIndex++;
-    } else {
-      //   console.log("whoopsies");
-      leftIndex++;
-      rightIndex++;
     }
-    i++;
   }
+
+  console.log(left, right, arr);
 
   return arr;
 }
