@@ -194,10 +194,8 @@ async function recursiveMergeSort(arr, shift) {
     recursiveMergeSort(arr.slice(half), half),
   ]);
 
-
   let [leftIndex, rightIndex] = [0, 0];
 
-  console.log("Initial array: ", array, left, right);
   // ALGO: construct new array from min btwn left and right at each index
   for (let i = 0; i < arr.length; i++) {
     // update the recursive array representation, and get the index we'll swap
@@ -212,19 +210,14 @@ async function recursiveMergeSort(arr, shift) {
       arr[i] = left[leftIndex];
       leftIndex++;
     }
-  }
-
-  for (let i = 0; i < arr.length; i++) {
-    // Perform visualization
 
     // internal array indices
     const shiftI = shift + i;
-    console.log(i, shiftI, arr[i], array[shiftI]);
 
-    // we have to directly overwrite the array i think
+    // we have to directly overwrite the array in order for it to show
+    await sleep();
     array[shiftI] = arr[i];
     drawBar(shiftI, arr[i], "red");
-    // drawBar(shiftArrIndex, arr[arrIndex], "red");
     await sleep();
     drawArray();
   }
