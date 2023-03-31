@@ -189,8 +189,11 @@ async function recursiveMergeSort(arr, shift) {
   }
 
   const half = Math.ceil(arr.length / 2);
-  let left = await recursiveMergeSort(arr.slice(0, half), 0);
-  let right = await recursiveMergeSort(arr.slice(half), half);
+  let [left, right] = await Promise.all([
+    recursiveMergeSort(arr.slice(0, half), 0),
+    recursiveMergeSort(arr.slice(half), half),
+  ]);
+
 
   let [leftIndex, rightIndex] = [0, 0];
 
