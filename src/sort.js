@@ -170,14 +170,24 @@ async function heapSort(arr) {
   return arr;
 }
 
-// async function mergeSort(arr) {}
-async function recursiveMergeSort(arr) {
-  if (arr.length == 1) {
+async function mergeSort(arr) {
+  let sorted_arr = await recursiveMergeSort(arr, 0);
+  return sorted_arr;
+}
+
+/**
+ *
+ * @param {* Our array to sort *} arr
+ * @param {* Our shift from the original array (helps with sorting later on)} shift
+ * @returns
+ */
+async function recursiveMergeSort(arr, shift) {
+  if (arr.length <= 1) {
     return arr;
   }
-  const half = Math.ceil(arr.length / 2);
-  let left = await recursiveMergeSort(arr.slice(0, half));
-  let right = await recursiveMergeSort(arr.slice(half));
+  const half = Math.ceil((shift + arr.length) / 2);
+  let left = await recursiveMergeSort(arr.slice(0, half), 0);
+  let right = await recursiveMergeSort(arr.slice(half), half);
 
   let [leftIndex, rightIndex] = [0, 0];
 
@@ -193,15 +203,13 @@ async function recursiveMergeSort(arr) {
       leftIndex++;
     }
   }
-
   console.log(left, right, arr);
-
   return arr;
 }
 
 function test() {
   rand_arr = [];
-  let s = 20;
+  let s = 10;
   let maxVal = 100;
   // build random array
   for (let i = 0; i < s; i++) {
@@ -209,8 +217,10 @@ function test() {
   }
 
   // test sorting algo
-  bubble_sort(rand_arr).then((result) => {
+  mergeSort(rand_arr).then((result) => {
     console.log(result);
     console.log(isSorted(result));
   });
 }
+
+test();
