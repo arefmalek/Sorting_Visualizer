@@ -65,6 +65,11 @@ function drawArray() {
 }
 
 function randomizeArray() {
+  // stop a sorting algorithm if it's running
+  if (running) {
+    running = false;
+    // set sleep to 0, await for changes
+  }
   // clear canvas and array
   clearCanvas();
   resetArray();
@@ -110,13 +115,16 @@ function runSort() {
     }
 
     sortingAlgorithm(array).then((sorted) => {
-      array = sorted;
-      drawArray();
+      if (running) {
+        array = sorted;
+        drawArray();
+        running = false;
+      }
     });
 
-    running = false;
   } else {
     console.log("Cannot restart: sorting is actively running!");
+    // TODO: Implement a stopping algorithm thing
   }
 }
 
@@ -155,10 +163,8 @@ var sortingAlgo = document.getElementById("sortingFunction");
 speedSlider.oninput = speedInput;
 sizeSlider.oninput = () => {
   sizeInput();
-  if (!running) {
-    console.log("running here!");
-    randomizeArray();
-  }
+
+  randomizeArray();
 };
 
 

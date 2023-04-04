@@ -18,9 +18,9 @@ const isMaxHeap = (array) => {
 
 async function bubbleSort(arr) {
   let compare = true;
-  while (compare === true) {
+  while (compare === true && running) {
     compare = false;
-    for (let i = 0; i < arr.length - 1; i++) {
+    for (let i = 0; i < arr.length - 1 && running; i++) {
       // swap
       if (arr[i] > arr[i + 1]) {
         compare = true;
@@ -39,9 +39,9 @@ async function bubbleSort(arr) {
 
 async function selectionSort(arr) {
   // algorithm works by selecting the minimum element in i...n and swapping
-  for (let i = 0; i < arr.length; i++) {
+  for (let i = 0; i < arr.length && running; i++) {
     let minDex = i;
-    for (let j = i + 1; j < arr.length; j++) {
+    for (let j = i + 1; j < arr.length && running; j++) {
       drawArray();
       drawBar(minDex, array[minDex], "red");
       if (arr[minDex] > arr[j]) {
@@ -67,10 +67,12 @@ async function selectionSort(arr) {
 }
 
 async function insertionSort(arr) {
-  for (let i = 1; i < arr.length; i++) {
+  for (let i = 1; i < arr.length && running; i++) {
     // start at first index
     let j = i;
-    while (j > 0 && arr[j - 1] > arr[j]) {
+    while (running &&
+        j > 0 && arr[j - 1] > arr[j]
+        ) {
       drawArray();
       drawBar(j - 1, arr[j - 1], "red");
       drawBar(j, arr[j], "red");
@@ -102,10 +104,12 @@ async function heapSort(arr) {
   };
 
   // construct maxheap: swim up for each index
-  for (let index = 1; index < arr.length; index++) {
+  for (let index = 1; index < arr.length && running; index++) {
     let parentIndex = getParentIndex(index);
     // swim up until we find place in Max-Heap
-    while (parentIndex != -1 && arr[parentIndex] < arr[index]) {
+    while (running && 
+        parentIndex != -1 && arr[parentIndex] < arr[index]
+        ) {
       // do the swap and update the value
       // console.log(parentIndex, index);
 
@@ -124,7 +128,7 @@ async function heapSort(arr) {
   }
 
   // removeMax and re-establish heap
-  for (let i = arr.length - 1; i > 0; i--) {
+  for (let i = arr.length - 1; running && i > 0; i--) {
     // swap maxNode with end of the heap
     drawArray();
     drawBar(0, arr[0], "red");
@@ -144,7 +148,7 @@ async function heapSort(arr) {
 
     // sink down the node until in the correct position
     let index = 0;
-    while (
+    while (running &&
       getLeftIndex(index) < i && // heap has at least 1 child node (left firs always)
       (arr[index] < getLeftChild(index, i) ||
         arr[index] < getRightChild(index, i))
@@ -197,7 +201,7 @@ async function recursiveMergeSort(arr, shift) {
   let [leftIndex, rightIndex] = [0, 0];
 
   // ALGO: construct new array from min btwn left and right at each index
-  for (let i = 0; i < arr.length; i++) {
+  for (let i = 0; i < arr.length && running; i++) {
     // update the recursive array representation, and get the index we'll swap
     if (leftIndex == left.length || right[rightIndex] < left[leftIndex]) {
       // index will be left + rightIndex of overall array
